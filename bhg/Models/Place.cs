@@ -8,7 +8,12 @@ namespace bhg.Models
 {
     public class Place
     {
-        public int PlaceId { get; set; }
+        public Place()
+        {
+            Attachment = new HashSet<Attachment>();
+        }
+        public int PlaceId { get; }
+        public int TreasureMapId { get; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
@@ -17,5 +22,8 @@ namespace bhg.Models
         public string Notes { get; set; }
         public DateTime CreateDate { get; }
         public DateTime? ModDate { get; }
+
+        public TreasureMap TreasureMap { get; set; }
+        public ICollection<Attachment> Attachment { get; set; }
     }
 }

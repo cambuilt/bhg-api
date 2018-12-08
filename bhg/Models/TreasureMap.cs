@@ -10,10 +10,10 @@ namespace bhg.Models
     {
         public TreasureMap()
         {
-            // Order = new HashSet<Order>();
+            Place = new HashSet<Place>();
         }
 
-        public string TreasureMapId { get; }
+        public int TreasureMapId { get; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
@@ -29,5 +29,7 @@ namespace bhg.Models
         public decimal LongitudeDelta { get; set; }
         public DateTime CreateDate { get; }
         public DateTime? ModDate { get; }
+
+        public ICollection<Place> Place { get; set; }
     }
 }
