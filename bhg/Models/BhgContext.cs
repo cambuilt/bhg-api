@@ -35,10 +35,10 @@ namespace bhg.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Latitude).HasColumnType("decimal");
-                entity.Property(e => e.LatitudeDelta).HasColumnType("decimal");
-                entity.Property(e => e.Longitude).HasColumnType("decimal");
-                entity.Property(e => e.LongitudeDelta).HasColumnType("decimal");
+                entity.Property(e => e.Latitude).HasColumnType("double");
+                entity.Property(e => e.LatitudeDelta).HasColumnType("double");
+                entity.Property(e => e.Longitude).HasColumnType("double");
+                entity.Property(e => e.LongitudeDelta).HasColumnType("double");
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
                 entity.Property(e => e.ModDate).HasColumnType("datetime");
             });
@@ -53,8 +53,8 @@ namespace bhg.Models
                     .HasMaxLength(50)
                     .IsUnicode(true);
 
-                entity.Property(e => e.Latitude).HasColumnType("decimal");
-                entity.Property(e => e.Longitude).HasColumnType("decimal");
+                entity.Property(e => e.Latitude).HasColumnType("double");
+                entity.Property(e => e.Longitude).HasColumnType("double");
 
                 entity.Property(e => e.Notes)
                     .IsUnicode(true);

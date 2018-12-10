@@ -13,7 +13,7 @@ namespace bhg.Models
             Place = new HashSet<Place>();
         }
 
-        public int TreasureMapId { get; }
+        public int TreasureMapId { get; set; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
@@ -23,12 +23,12 @@ namespace bhg.Models
         [Required]
         [StringLength(50)]
         public string Author { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal LatitudeDelta { get; set; }
-        public decimal Longitude { get; set; }
-        public decimal LongitudeDelta { get; set; }
-        public DateTime CreateDate { get; }
-        public DateTime? ModDate { get; }
+        public double Latitude { get; set; }
+        public double LatitudeDelta { get; set; }
+        public double Longitude { get; set; }
+        public double LongitudeDelta { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime? ModDate { get; set; }
 
         public ICollection<Place> Place { get; set; }
     }
