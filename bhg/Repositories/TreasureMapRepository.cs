@@ -36,6 +36,7 @@ namespace bhg.Repositories
 
         public IEnumerable<TreasureMap> GetAll()
         {
+            _context.TreasureMap.Include(treasureMap => treasureMap.Place).ToList();
             return _context.TreasureMap;
         }
 

@@ -40,4 +40,4 @@ Thumbs.db
 # dotCover
 *.dotCover
 
-Startup.cs
+/bhg/Startup.cs
