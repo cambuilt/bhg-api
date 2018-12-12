@@ -8,8 +8,9 @@ using bhg.Interfaces;
 namespace bhg.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Attachment")]
-    public class AttachmentController : Controller
+    [ApiController]
+    [Route("/[controller]")]
+    public class AttachmentController : ControllerBase
     {
         private readonly BhgContext _context;
 

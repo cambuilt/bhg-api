@@ -5,12 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using bhg.Models;
 using bhg.Interfaces;
 using System.Net;
+using System;
 
 namespace bhg.Controllers
 {
     [Produces("application/json")]
-    [Route("api/TreasureMap")]
-    public class TreasureMapController : Controller
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("/[controller]")]
+    public class TreasureMapController : ControllerBase
     {
         private readonly ITreasureMapRepository _treasureMapRepository;
 
@@ -24,11 +27,14 @@ namespace bhg.Controllers
             return await _treasureMapRepository.Exist(id);
         }
 
-        [HttpGet]
+        [HttpGet(Name = nameof(GetTreasureMap))]
         [Produces(typeof(DbSet<TreasureMap>))]
         [ResponseCache(Duration = 60)]
         public IActionResult GetTreasureMap()
         {
+            var thisUrl = nameof(GetTreasureMap);
+            System.Console.WriteLine(thisUrl);
+
             var results = new ObjectResult(_treasureMapRepository.GetAll())
             {
                 StatusCode = (int)HttpStatusCode.OK

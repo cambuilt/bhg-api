@@ -8,8 +8,9 @@ using bhg.Interfaces;
 namespace bhg.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Place")]
-    public class PlaceController : Controller
+    [ApiController]
+    [Route("/[controller]")]
+    public class PlaceController : ControllerBase
     {
         private readonly BhgContext _context;
 
