@@ -8,13 +8,13 @@ namespace bhg.Interfaces
 {
     public interface ITreasureMapRepository
     {
-        Task<TreasureMap> Add(TreasureMap treasureMap);
+        Task<TreasureMapEntity> Add(TreasureMapEntity treasureMap);
 
-        IEnumerable<TreasureMap> GetAll();
+        IEnumerable<TreasureMapEntity> GetAll();
 
         Task<TreasureMap> Find(int id);
 
-        Task<TreasureMap> Update(TreasureMap treasureMap);
+        Task<TreasureMapEntity> Update(TreasureMapEntity treasureMap);
 
         Task<TreasureMap> Remove(int id);
 

@@ -6,27 +6,31 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bhg.Models
 {
-    public class Place
+    public class TreasureMapEntity
     {
-        public Place()
+        public TreasureMapEntity()
         {
-            Attachment = new HashSet<Attachment>();
+            Place = new HashSet<Place>();
         }
-        public int PlaceId { get; set; }
+
+        [Key]
         public int TreasureMapId { get; set; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-        [StringLength(100)]
-        public string Description { get; set; }
-        [StringLength(100)]
-        public string Address { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Area { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Author { get; set; }
         public double Latitude { get; set; }
+        public double LatitudeDelta { get; set; }
         public double Longitude { get; set; }
-        public string Notes { get; set; }
+        public double LongitudeDelta { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
 
-        public ICollection<Attachment> Attachment { get; set; }
+        public ICollection<Place> Place { get; set; }
     }
 }

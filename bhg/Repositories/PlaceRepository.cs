@@ -31,7 +31,7 @@ namespace bhg.Repositories
 
         public async Task<Place> Find(int id)
         {
-            return await _context.Place.Include(place => place.TreasureMap).SingleOrDefaultAsync(a => a.PlaceId == id);
+            return await _context.Place.SingleOrDefaultAsync(a => a.PlaceId == id);
         }
 
         public IEnumerable<Place> GetAll()

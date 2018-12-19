@@ -1,4 +1,5 @@
-﻿using bhg.Interfaces;
+﻿using AutoMapper;
+using bhg.Interfaces;
 using bhg.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,14 +11,16 @@ namespace bhg.Repositories
 {
     public class TreasureMapRepository : ITreasureMapRepository
     {
-        private BhgContext _context;
+        private readonly BhgContext _context;
+        private readonly IMapper _mapper;
 
-        public TreasureMapRepository(BhgContext context)
+        public TreasureMapRepository(BhgContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<TreasureMap> Add(TreasureMap treasureMap)
+        public async Task<TreasureMapEntity> Add(TreasureMapEntity treasureMap)
         {
             await _context.TreasureMap.AddAsync(treasureMap);
             await _context.SaveChangesAsync();
@@ -31,12 +34,19 @@ namespace bhg.Repositories
 
         public async Task<TreasureMap> Find(int id)
         {
-            return await _context.TreasureMap.Include(treasureMap => treasureMap.Place).SingleOrDefaultAsync(a => a.TreasureMapId == id);
+            var treasureMap = await _context.TreasureMap.Include(tm => tm.Place).SingleOrDefaultAsync(a => a.TreasureMapId == id);
+
+            if (treasureMap == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<TreasureMap>(treasureMap);
         }
 
-        public IEnumerable<TreasureMap> GetAll()
+        public IEnumerable<TreasureMapEntity> GetAll()
         {
-            _context.TreasureMap.Include(treasureMap => treasureMap.Place).ToList();
+            //_context.TreasureMap.Include(treasureMap => treasureMap.Place).ToList();    // Eager loading of places
             return _context.TreasureMap;
         }
 
@@ -45,10 +55,10 @@ namespace bhg.Repositories
             var treasureMap = await _context.TreasureMap.SingleAsync(a => a.TreasureMapId == id);
             _context.TreasureMap.Remove(treasureMap);
             await _context.SaveChangesAsync();
-            return treasureMap;
+            return _mapper.Map<TreasureMap>(treasureMap);
         }
 
-        public async Task<TreasureMap> Update(TreasureMap treasureMap)
+        public async Task<TreasureMapEntity> Update(TreasureMapEntity treasureMap)
         {
             _context.TreasureMap.Update(treasureMap);
             await _context.SaveChangesAsync();

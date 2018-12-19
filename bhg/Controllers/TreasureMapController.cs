@@ -6,6 +6,7 @@ using bhg.Models;
 using bhg.Interfaces;
 using System.Net;
 using System;
+using Microsoft.Extensions.Options;
 
 namespace bhg.Controllers
 {
@@ -40,15 +41,16 @@ namespace bhg.Controllers
                 StatusCode = (int)HttpStatusCode.OK
             };
 
-            Request.HttpContext.Response.Headers.Add("X-Total-Count", _treasureMapRepository.GetAll().Count().ToString());
+            //Request.HttpContext.Response.Headers.Add("X-Total-Count", _treasureMapRepository.GetAll().Count().ToString());
 
             return results;
         }
 
         [HttpGet("{id}")]
-        [Produces(typeof(TreasureMap))]
         [ResponseCache(Duration = 60)]
-        public async Task<IActionResult> GetTreasureMap([FromRoute] int id)
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<TreasureMap>> GetTreasureMapById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -62,12 +64,29 @@ namespace bhg.Controllers
                 return NotFound();
             }
 
-            return Ok(treasureMap);
+            // treasureMap.Href
+
+            //var resource = new TreasureMap
+            //{
+            //    Href = Url.Link(nameof(GetTreasureMapById), new { id = treasureMap.TreasureMapId }),
+            //    Name = treasureMap.Name,
+            //    Area = treasureMap.Area,
+            //    Author = treasureMap.Author,
+            //    Latitude = treasureMap.Latitude,
+            //    LatitudeDelta = treasureMap.LatitudeDelta,
+            //    Longitude = treasureMap.Longitude,
+            //    LongitudeDelta = treasureMap.LongitudeDelta,
+            //    CreateDate = treasureMap.CreateDate,
+            //    ModDate = treasureMap.ModDate,
+            //    Place = treasureMap.Place
+            //};
+
+            return treasureMap;
         }
 
         [HttpPut("{id}")]
         [Produces(typeof(TreasureMap))]
-        public async Task<IActionResult> PutTreasureMap([FromRoute] int id, [FromBody] TreasureMap treasureMap)
+        public async Task<ActionResult> PutTreasureMap([FromRoute] int id, [FromBody] TreasureMapEntity treasureMap)
         {
             if (!ModelState.IsValid)
             {
@@ -99,7 +118,7 @@ namespace bhg.Controllers
 
         [HttpPost]
         [Produces(typeof(TreasureMap))]
-        public async Task<IActionResult> PostTreasureMap([FromBody] TreasureMap treasureMap)
+        public async Task<ActionResult> PostTreasureMap([FromBody] TreasureMapEntity treasureMap)
         {
             if (!ModelState.IsValid)
             {

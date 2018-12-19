@@ -6,14 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace bhg.Models
 {
-    public class TreasureMap
+    public class TreasureMap : Resource
     {
         public TreasureMap()
         {
             Place = new HashSet<Place>();
         }
 
-        public int TreasureMapId { get; set; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }

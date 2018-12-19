@@ -8,7 +8,7 @@ namespace bhg.Models
 {
     public partial class BhgContext : DbContext
     {
-        public virtual DbSet<TreasureMap> TreasureMap { get; set; }
+        public virtual DbSet<TreasureMapEntity> TreasureMap { get; set; }
         public virtual DbSet<Place> Place { get; set; }
         public virtual DbSet<Attachment> Attachment { get; set; }
 
@@ -21,7 +21,7 @@ namespace bhg.Models
         {
             modelBuilder.Entity<TreasureMap>(entity =>
             {
-                entity.Property(e => e.TreasureMapId).HasColumnName("TreasureMapId");
+                //entity.Property(e => e.TreasureMapId).HasColumnName("TreasureMapId");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -61,12 +61,6 @@ namespace bhg.Models
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
                 entity.Property(e => e.ModDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.TreasureMap)
-                    .WithMany(p => p.Place)
-                    .HasForeignKey(d => d.TreasureMapId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Place_TreasureMap");
             });
 
             modelBuilder.Entity<Attachment>(entity =>
