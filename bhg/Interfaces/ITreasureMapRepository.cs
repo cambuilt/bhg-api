@@ -10,9 +10,11 @@ namespace bhg.Interfaces
     {
         Task<TreasureMapEntity> Add(TreasureMapEntity treasureMap);
 
-        IEnumerable<TreasureMapEntity> GetAll();
+        Task<IEnumerable<TreasureMap>> GetTreasureMapsAsync();
 
-        Task<TreasureMap> Find(int id);
+        Task<TreasureMap> GetTreasureMapAsync(int id);
+
+        //Task<TreasureMap> Find(int id);
 
         Task<TreasureMapEntity> Update(TreasureMapEntity treasureMap);
 

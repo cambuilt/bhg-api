@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace bhg.Models
 {
-    public class Place
+    public class GemEntity
     {
-        public Place()
+        public GemEntity()
         {
-            Attachment = new HashSet<Attachment>();
+            Attachments = new HashSet<AttachmentEntity>();
         }
-        public int PlaceId { get; set; }
+        [Key]
+        public int Id { get; set; }
         public int TreasureMapId { get; set; }
         [Required]
         [StringLength(50)]
@@ -27,6 +29,9 @@ namespace bhg.Models
         public DateTime CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
 
-        public ICollection<Attachment> Attachment { get; set; }
+        [ForeignKey("TreasureMapId")]
+        public TreasureMapEntity TreasureMap { get; set; }
+
+        public ICollection<AttachmentEntity> Attachments { get; set; }
     }
 }

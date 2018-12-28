@@ -48,6 +48,7 @@ namespace bhg.Models
         [JsonProperty(Order = -4)]
         public string Href { get; set; }
 
+        [NotMapped]
         [JsonProperty(Order = -3, PropertyName = "rel", NullValueHandling = NullValueHandling.Ignore)]
         public string[] Relations { get; set; }
 
@@ -60,6 +61,7 @@ namespace bhg.Models
         public string RouteName { get; set; }
 
         // Stores the route parameters before being rewritten by the LinkRewritingFilter
+        [NotMapped]
         [JsonIgnore]
         public object RouteValues { get; set; }
     }

@@ -11,7 +11,7 @@ namespace bhg.Models
     {
         public Link Info { get; set; }
 
-        public Link Rooms { get; set; }
+        public Link TreasureMaps { get; set; }
 
         public Link Users { get; set; }
 

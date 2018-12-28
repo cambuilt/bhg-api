@@ -8,9 +8,10 @@ namespace bhg.Models
 {
     public partial class BhgContext : DbContext
     {
-        public virtual DbSet<TreasureMapEntity> TreasureMap { get; set; }
-        public virtual DbSet<Place> Place { get; set; }
-        public virtual DbSet<Attachment> Attachment { get; set; }
+        public virtual DbSet<TreasureMapEntity> TreasureMaps { get; set; }
+        public virtual DbSet<GemEntity> Gems { get; set; }
+        public virtual DbSet<AttachmentEntity> Attachments { get; set; }
+        public virtual DbSet<BookingEntity> Bookings { get; set; }
 
         public BhgContext(DbContextOptions<BhgContext> options) : base(options)
         {
@@ -19,9 +20,9 @@ namespace bhg.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TreasureMap>(entity =>
+            modelBuilder.Entity<TreasureMapEntity>(entity =>
             {
-                //entity.Property(e => e.TreasureMapId).HasColumnName("TreasureMapId");
+                entity.Property(e => e.Id).HasColumnName("Id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -43,9 +44,9 @@ namespace bhg.Models
                 entity.Property(e => e.ModDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Place>(entity =>
+            modelBuilder.Entity<GemEntity>(entity =>
             {
-                entity.Property(e => e.PlaceId).HasColumnName("PlaceId");
+                entity.Property(e => e.Id).HasColumnName("Id");
 
                 entity.Property(e => e.TreasureMapId).HasColumnName("TreasureMapId");
 
@@ -61,13 +62,18 @@ namespace bhg.Models
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
                 entity.Property(e => e.ModDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.TreasureMap)
+                .WithMany(p => p.Gems)
+                .HasForeignKey(d => d.TreasureMapId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Gem_TreasureMap");
             });
 
-            modelBuilder.Entity<Attachment>(entity =>
+            modelBuilder.Entity<AttachmentEntity>(entity =>
             {
-                entity.Property(e => e.AttachmentId).HasColumnName("AttachmentId");
-
-                entity.Property(e => e.PlaceId).HasColumnName("PlaceId");
+                entity.Property(e => e.Id).HasColumnName("Id");
+                entity.Property(e => e.GemId).HasColumnName("GemId");
 
                 entity.Property(e => e.Title)
                     .HasMaxLength(50)
@@ -80,11 +86,11 @@ namespace bhg.Models
                 entity.Property(e => e.Notes)
                     .IsUnicode(true);
 
-                entity.HasOne(d => d.Place)
-                    .WithMany(p => p.Attachment)
-                    .HasForeignKey(d => d.PlaceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Attachment_Place");
+                entity.HasOne(d => d.Gem)
+                .WithMany(p => p.Attachments)
+                .HasForeignKey(d => d.GemId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Attachment_Gem");
             });
         }
     }

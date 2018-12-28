@@ -35,7 +35,7 @@ namespace bhg
         {
             services.Configure<AppInfo>(Configuration.GetSection("Info"));
             services.AddScoped<ITreasureMapRepository, TreasureMapRepository>();
-            services.AddScoped<IPlaceRepository, PlaceRepository>();
+            services.AddScoped<IGemRepository, GemRepository>();
             services.AddScoped<IAttachmentRepository, AttachmentRepository>();
             // services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMemoryCache();

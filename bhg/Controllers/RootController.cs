@@ -19,7 +19,7 @@ namespace bhg.Controllers
             var response = new RootResponse
             {
                 Self = Link.To(nameof(GetRoot)),
-                Rooms = Link.To(nameof(TreasureMapController.GetTreasureMap)),
+                TreasureMaps = Link.ToCollection(nameof(TreasureMapsController.GetAllTreasureMaps)),
                 Info = Link.To(nameof(InfoController.GetInfo))
             };
 

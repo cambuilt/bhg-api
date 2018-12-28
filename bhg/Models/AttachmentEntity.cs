@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace bhg.Models
 {
-    public class Attachment : Resource
+    public class AttachmentEntity
     {
+        public int Id { get; set; }
         public int GemId { get; set; }
         [Required]
         [StringLength(50)]

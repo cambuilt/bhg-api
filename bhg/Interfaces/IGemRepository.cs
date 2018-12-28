@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace bhg.Interfaces
 {
-    public interface IAttachmentRepository
+    public interface IGemRepository
     {
-        Task<Attachment> GetAttachmentAsync(int Id);
+        Task<bool> Exist(int id);
+
+        Task<Gem> GetGemAsync(int gemId);
     }
 }

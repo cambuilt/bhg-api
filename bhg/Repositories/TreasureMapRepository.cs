@@ -6,61 +6,89 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 
 namespace bhg.Repositories
 {
     public class TreasureMapRepository : ITreasureMapRepository
     {
         private readonly BhgContext _context;
-        private readonly IMapper _mapper;
+        private readonly IConfigurationProvider _mappingConfiguration;
 
-        public TreasureMapRepository(BhgContext context, IMapper mapper)
+        public TreasureMapRepository(BhgContext context, IConfigurationProvider mappingConfiguration)
         {
             _context = context;
-            _mapper = mapper;
+            _mappingConfiguration = mappingConfiguration;
         }
 
         public async Task<TreasureMapEntity> Add(TreasureMapEntity treasureMap)
         {
-            await _context.TreasureMap.AddAsync(treasureMap);
+            await _context.TreasureMaps.AddAsync(treasureMap);
             await _context.SaveChangesAsync();
             return treasureMap;
         }
 
         public async Task<bool> Exist(int id)
         {
-            return await _context.TreasureMap.AnyAsync(c => c.TreasureMapId == id);
+            return await _context.TreasureMaps.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<TreasureMap> Find(int id)
-        {
-            var treasureMap = await _context.TreasureMap.Include(tm => tm.Place).SingleOrDefaultAsync(a => a.TreasureMapId == id);
+        //public async Task<TreasureMap> Find(int id)
+        //{
+            //var treasureMap = await _context.TreasureMap.Include(tm => tm.Gem).SingleOrDefaultAsync(a => a.TreasureMapId == id);
 
-            if (treasureMap == null)
+            //if (treasureMap == null)
+            //{
+            //    return null;
+            //}
+
+            //return _mapper.Map<TreasureMap>(treasureMap);
+        //}
+
+        public async Task<TreasureMap> GetTreasureMapAsync(int id)
+        {
+            var entity = await _context.TreasureMaps.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (entity == null)
             {
                 return null;
             }
 
-            return _mapper.Map<TreasureMap>(treasureMap);
+            var mapper = _mappingConfiguration.CreateMapper();
+            return mapper.Map<TreasureMap>(entity);
         }
 
         public IEnumerable<TreasureMapEntity> GetAll()
         {
-            //_context.TreasureMap.Include(treasureMap => treasureMap.Place).ToList();    // Eager loading of places
-            return _context.TreasureMap;
+            //_context.TreasureMap.Include(treasureMap => treasureMap.Gem).ToList();    // Eager loading of gems
+            return _context.TreasureMaps;
+        }
+
+        public async Task<IEnumerable<TreasureMap>> GetTreasureMapsAsync()
+        {
+            var query = _context.TreasureMaps.ProjectTo<TreasureMap>(_mappingConfiguration);
+
+            return await query.ToArrayAsync();
         }
 
         public async Task<TreasureMap> Remove(int id)
         {
-            var treasureMap = await _context.TreasureMap.SingleAsync(a => a.TreasureMapId == id);
-            _context.TreasureMap.Remove(treasureMap);
+            var entity = await _context.TreasureMaps.SingleAsync(a => a.Id == id);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            _context.TreasureMaps.Remove(entity);
             await _context.SaveChangesAsync();
-            return _mapper.Map<TreasureMap>(treasureMap);
+            var mapper = _mappingConfiguration.CreateMapper();
+            return mapper.Map<TreasureMap>(entity);
         }
 
         public async Task<TreasureMapEntity> Update(TreasureMapEntity treasureMap)
         {
-            _context.TreasureMap.Update(treasureMap);
+            _context.TreasureMaps.Update(treasureMap);
             await _context.SaveChangesAsync();
             return treasureMap;
         }

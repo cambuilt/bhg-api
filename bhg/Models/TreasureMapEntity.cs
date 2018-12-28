@@ -10,11 +10,11 @@ namespace bhg.Models
     {
         public TreasureMapEntity()
         {
-            Place = new HashSet<Place>();
+            Gems = new HashSet<GemEntity>();
         }
 
         [Key]
-        public int TreasureMapId { get; set; }
+        public int Id { get; set; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
@@ -31,6 +31,6 @@ namespace bhg.Models
         public DateTime CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
 
-        public ICollection<Place> Place { get; set; }
+        public ICollection<GemEntity> Gems { get; set; }
     }
 }
