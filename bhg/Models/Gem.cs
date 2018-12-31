@@ -24,6 +24,7 @@ namespace bhg.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Notes { get; set; }
+        public string ImageUrl { get; set; }
         public DateTimeOffset StartAt { get; set; }
         public DateTimeOffset EndAt { get; set; }
         public DateTime CreateDate { get; set; }

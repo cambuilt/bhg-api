@@ -61,7 +61,8 @@ namespace bhg
             // Insted of WithOrigins, use AllowAnyOrigin for testing.
             services.AddCors(options =>
             {
-                options.AddPolicy("BackyardHiddenGems", policy => policy.WithOrigins("https://backyardhiddengems.com"));
+                options.AddPolicy("LocalDev", policy => policy.AllowAnyOrigin());
+                // policy.WithOrigins("http://www.backyardhiddengems.com/")
             });
 
             var connection = Configuration.GetValue<string>("ConnectionString");
@@ -80,7 +81,7 @@ namespace bhg
                 app.UseHsts();
             }
 
-            app.UseCors("BackyardHiddenGems");
+            app.UseCors("LocalDev");
             app.UseMvc();
         }
     }
