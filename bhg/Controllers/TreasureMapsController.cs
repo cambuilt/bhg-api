@@ -19,11 +19,13 @@ namespace bhg.Controllers
     public class TreasureMapsController : ControllerBase
     {
         private readonly ITreasureMapRepository _treasureMapRepository;
+        private readonly PagingOptions _defaultPagingOptions;
         //private readonly IOpeningService _openingService;
 
-        public TreasureMapsController(ITreasureMapRepository treasureMapRepository)
+        public TreasureMapsController(ITreasureMapRepository treasureMapRepository, IOptions<PagingOptions> defaultPagingOptionsWrapper)
         {
             _treasureMapRepository = treasureMapRepository;
+            _defaultPagingOptions = defaultPagingOptionsWrapper.Value;
             //, IOpeningService openingService
             //_openingService = openingService;
         }
@@ -34,19 +36,25 @@ namespace bhg.Controllers
         }
 
         [HttpGet(Name = nameof(GetAllTreasureMaps))]
+        [ProducesResponseType(400)]
         [ProducesResponseType(200)]
         [ResponseCache(Duration = 60)]
-        public async Task<ActionResult<Collection<TreasureMap>>> GetAllTreasureMaps()
+        public async Task<ActionResult<Collection<TreasureMap>>> GetAllTreasureMaps(
+            [FromQuery] PagingOptions pagingOptions,
+            [FromQuery] SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
+            [FromQuery] SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
         {
-            IEnumerable<TreasureMap> treasureMaps = await _treasureMapRepository.GetTreasureMapsAsync();
+            pagingOptions.Offset = pagingOptions.Offset ?? _defaultPagingOptions.Offset;
+            pagingOptions.Limit = pagingOptions.Limit ?? _defaultPagingOptions.Limit;
 
-            var collection = new Collection<TreasureMap>
-            {
-                Self = Link.ToCollection(nameof(GetAllTreasureMaps)),
-                Value = treasureMaps.ToArray()
-            };
+            PagedResults<TreasureMap> treasureMaps = await _treasureMapRepository.GetTreasureMapsAsync(
+                pagingOptions, sortOptions, searchOptions);
 
-            //Request.HttpContext.Response.Headers.Add("X-Total-Count", _treasureMapRepository.GetAll().Count().ToString());
+            var collection = PagedCollection<TreasureMap>.Create<TreasureMapsRespoonse>(
+                Link.ToCollection(nameof(GetAllTreasureMaps)),
+                treasureMaps.Items.ToArray(),
+                treasureMaps.TotalSize,
+                pagingOptions);
 
             return collection;
         }
@@ -83,6 +91,26 @@ namespace bhg.Controllers
             //};
 
             return treasureMap;
+        }
+
+        // POST /treasuremaps/{treasureMapId}/gems
+        [HttpPost("{id}/gems", Name = nameof(CreateGemForTreasureMap))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> CreateGemForTreasureMap(
+            int id, [FromBody] GemForm gemForm)
+        {
+            var treasureMap = await _treasureMapRepository.GetTreasureMapAsync(id);
+            if (treasureMap == null) return NotFound();
+
+            var bookingId = await _bookingService.CreateGemAsync(
+                userId, roomId, bookingForm.StartAt.Value, bookingForm.EndAt.Value);
+
+            return Created(
+                Url.Link(nameof(BookingsController.GetBookingById),
+                new { bookingId }),
+                null);
         }
 
         // GET /TreasureMaps/Openings

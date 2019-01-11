@@ -1,0 +1,6 @@
+ee2b83be-91db-4de5-8122-35a9e9195976	DC Dog Runs	Washington DC	Cam	38.9539584	100	-77.1143149	100	2018-12-10 22:01:00	2018-12-10 22:01:00	NULL
+
+301df04d-8679-4b1b-ab92-0a586ae53d08	Charleston	Charleston SC	Cam	32.822325	100	-79.904541	100	2018-12-02 23:36:00	NULL	NULL
+
+
+301df04d-8679-4b1b-ab92-0a586ae53d15	301df04d-8679-4b1b-ab92-0a586ae53d10	Lighthouse Inlet Heritage Preserve	https://www.ccprc.com/3149/Lighthouse-Inlet-Heritage-Preserve	Lighthouse Inlet Heritage Preserve is the perfect spot for viewing the Morris Island Lighthouse, surf fishing, beachside strolls, wildlife observation, and photography. The site also offers many diverse birding opportunities and is a regular site for organized bird walks.	2018-12-09 18:12:00	2018-12-09 18:14:00

@@ -11,5 +11,8 @@ namespace bhg.Interfaces
         Task<bool> Exist(int id);
 
         Task<Gem> GetGemAsync(int gemId);
+
+        Task<Guid> CreateBookingAsync(
+            int treasureMapId);
     }
 }

@@ -34,6 +34,7 @@ namespace bhg
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppInfo>(Configuration.GetSection("Info"));
+            services.Configure<PagingOptions>(Configuration.GetSection("DefaultPagingOptions"));
             services.AddScoped<ITreasureMapRepository, TreasureMapRepository>();
             services.AddScoped<IGemRepository, GemRepository>();
             services.AddScoped<IAttachmentRepository, AttachmentRepository>();
@@ -67,6 +68,15 @@ namespace bhg
 
             var connection = Configuration.GetValue<string>("ConnectionString");
             services.AddDbContext<BhgContext>(options => options.UseSqlServer(connection));
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errorResponse = new ApiError(context.ModelState);
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

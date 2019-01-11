@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using bhg.Infrastructure;
 
 namespace bhg.Models
 {
@@ -13,15 +14,24 @@ namespace bhg.Models
             Gems = new HashSet<Gem>();
         }
 
+        [Sortable]
+        [Searchable]
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+
+        [Sortable(Default = true)]
+        [Searchable]
         [Required]
         [StringLength(50)]
         public string Area { get; set; }
+
+        [Sortable]
+        [Searchable]
         [Required]
         [StringLength(50)]
         public string Author { get; set; }
+
         public double Latitude { get; set; }
         public double LatitudeDelta { get; set; }
         public double Longitude { get; set; }

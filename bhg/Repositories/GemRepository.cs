@@ -35,5 +35,31 @@ namespace bhg.Repositories
             return _mapper.Map<Gem>(entity);
 
         }
+
+        public async Task<Guid> CreateGemAsync(
+            int treasureMapId)
+        {
+            var gem = await _context.TreasureMaps
+                .SingleOrDefaultAsync(r => r.Id == treasureMapId);
+            if (gem == null) throw new ArgumentException("Invalid treasure map ID.");
+
+            var id = Guid.NewGuid();
+
+            var newGem = _context.Gems.Add(new GemEntity
+            {
+                Id = id,
+                CreatedAt = DateTimeOffset.UtcNow,
+                ModifiedAt = DateTimeOffset.UtcNow,
+                StartAt = startAt.ToUniversalTime(),
+                EndAt = endAt.ToUniversalTime(),
+                Total = total,
+                Room = room
+            });
+
+            var created = await _context.SaveChangesAsync();
+            if (created < 1) throw new InvalidOperationException("Could not create booking.");
+
+            return id;
+        }
     }
 }
