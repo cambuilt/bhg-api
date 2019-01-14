@@ -20,13 +20,5 @@ namespace bhg.Repositories
             _mapper = mapper;
         }
 
-        public async Task<Attachment> GetAttachmentAsync(int Id)
-        {
-            var entity = await _context.Attachments.SingleOrDefaultAsync(b => b.Id == Id);
-
-            if (entity == null) return null;
-
-            return _mapper.Map<Attachment>(entity);
-        }
     }
 }

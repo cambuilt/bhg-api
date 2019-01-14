@@ -10,16 +10,19 @@ namespace bhg.Interfaces
     {
         Task<TreasureMapEntity> Add(TreasureMapEntity treasureMap);
 
-        Task<IEnumerable<TreasureMap>> GetTreasureMapsAsync();
+        Task<PagedResults<TreasureMap>> GetTreasureMapsAsync(
+            PagingOptions pagingOptions, 
+            SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
+            SearchOptions<TreasureMap, TreasureMapEntity> searchOptions);
 
-        Task<TreasureMap> GetTreasureMapAsync(int id);
+        Task<TreasureMap> GetTreasureMapAsync(Guid id);
 
         //Task<TreasureMap> Find(int id);
 
         Task<TreasureMapEntity> Update(TreasureMapEntity treasureMap);
 
-        Task<TreasureMap> Remove(int id);
+        Task<TreasureMap> Remove(Guid id);
 
-        Task<bool> Exist(int id);
+        Task<bool> Exist(Guid id);
     }
 }

@@ -15,15 +15,15 @@ namespace bhg.Infrastructure
             CreateMap<TreasureMapEntity, TreasureMap>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => Capitalize(src.Name)))
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
-                    Link.To(nameof(Controllers.TreasureMapsController.GetTreasureMapById), new { treasureMapId = src.Id })));
+                    Link.To(nameof(Controllers.TreasureMapsController.GetTreasureMapById), new { treasureMapId = src.Id })))
+                .ForMember(dest => dest.Gem, opt => opt.MapFrom(src =>
+                    FormMetadata.FromModel(new GemForm(),
+                    Link.ToForm(nameof(Controllers.TreasureMapsController.CreateGemForTreasureMapAsync),
+                    new { treasureMapId = src.Id }, Link.PostMethod, Form.CreateRelation))));
 
             CreateMap<GemEntity, Gem>()
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
                     Link.To(nameof(Controllers.GemsController.GetGemById), new {gemId = src.Id })));
-
-            CreateMap<AttachmentEntity, Attachment>()
-                .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
-                    Link.To(nameof(Controllers.AttachmentsController.GetAttachmentById), new { attachmentId = src.Id })));
         }
 
         private string Capitalize(string text)

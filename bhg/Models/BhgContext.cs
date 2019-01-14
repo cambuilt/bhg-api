@@ -11,12 +11,8 @@ namespace bhg.Models
         public virtual DbSet<TreasureMapEntity> TreasureMaps { get; set; }
         public virtual DbSet<GemEntity> Gems { get; set; }
         public virtual DbSet<AttachmentEntity> Attachments { get; set; }
-        public virtual DbSet<BookingEntity> Bookings { get; set; }
 
-        public BhgContext(DbContextOptions<BhgContext> options) : base(options)
-        {
-
-        }
+        public BhgContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,7 +63,7 @@ namespace bhg.Models
                 .WithMany(p => p.Gems)
                 .HasForeignKey(d => d.TreasureMapId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Gem_TreasureMap");
+                .HasConstraintName("FK_Gems_TreasureMapId");
             });
 
             modelBuilder.Entity<AttachmentEntity>(entity =>
@@ -90,7 +86,7 @@ namespace bhg.Models
                 .WithMany(p => p.Attachments)
                 .HasForeignKey(d => d.GemId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Attachment_Gem");
+                .HasConstraintName("FK_Attachments_GemId");
             });
         }
     }

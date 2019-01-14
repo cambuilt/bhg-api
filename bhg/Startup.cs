@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,7 @@ namespace bhg
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppInfo>(Configuration.GetSection("Info"));
+            services.Configure<PagingOptions>(Configuration.GetSection("DefaultPagingOptions"));
             services.AddScoped<ITreasureMapRepository, TreasureMapRepository>();
             services.AddScoped<IGemRepository, GemRepository>();
             services.AddScoped<IAttachmentRepository, AttachmentRepository>();
@@ -62,11 +64,37 @@ namespace bhg
             services.AddCors(options =>
             {
                 options.AddPolicy("LocalDev", policy => policy.AllowAnyOrigin());
-                // policy.WithOrigins("http://www.backyardhiddengems.com/")
+                // policy.WithOrigins("http://www.backyardhiddengems.com/") )
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+            });
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAll"));
             });
 
             var connection = Configuration.GetValue<string>("ConnectionString");
             services.AddDbContext<BhgContext>(options => options.UseSqlServer(connection));
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errorResponse = new ApiError(context.ModelState);
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,7 +109,7 @@ namespace bhg
                 app.UseHsts();
             }
 
-            app.UseCors("LocalDev");
+            app.UseCors("AllowAll");
             app.UseMvc();
         }
     }

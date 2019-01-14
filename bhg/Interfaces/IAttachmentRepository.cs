@@ -8,6 +8,6 @@ namespace bhg.Interfaces
 {
     public interface IAttachmentRepository
     {
-        Task<Attachment> GetAttachmentAsync(int Id);
+        
     }
 }

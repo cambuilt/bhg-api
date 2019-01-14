@@ -28,7 +28,7 @@ namespace bhg.Repositories
             return treasureMap;
         }
 
-        public async Task<bool> Exist(int id)
+        public async Task<bool> Exist(Guid id)
         {
             return await _context.TreasureMaps.AnyAsync(c => c.Id == id);
         }
@@ -45,7 +45,7 @@ namespace bhg.Repositories
             //return _mapper.Map<TreasureMap>(treasureMap);
         //}
 
-        public async Task<TreasureMap> GetTreasureMapAsync(int id)
+        public async Task<TreasureMap> GetTreasureMapAsync(Guid id)
         {
             var entity = await _context.TreasureMaps.SingleOrDefaultAsync(x => x.Id == id);
 
@@ -64,14 +64,31 @@ namespace bhg.Repositories
             return _context.TreasureMaps;
         }
 
-        public async Task<IEnumerable<TreasureMap>> GetTreasureMapsAsync()
+        public async Task<PagedResults<TreasureMap>> GetTreasureMapsAsync(
+            PagingOptions pagingOptions, 
+            SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
+            SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
         {
-            var query = _context.TreasureMaps.ProjectTo<TreasureMap>(_mappingConfiguration);
+            IQueryable<TreasureMapEntity> query = _context.TreasureMaps;
+            query = searchOptions.Apply(query);
+            query = sortOptions.Apply(query);
 
-            return await query.ToArrayAsync();
+            var size = await query.CountAsync();
+
+            var items = await query
+                .Skip(pagingOptions.Offset.Value)
+                .Take(pagingOptions.Limit.Value)
+                .ProjectTo<TreasureMap>(_mappingConfiguration)
+                .ToArrayAsync();
+
+            return new PagedResults<TreasureMap>
+            {
+                Items = items,
+                TotalSize = size
+            };
         }
 
-        public async Task<TreasureMap> Remove(int id)
+        public async Task<TreasureMap> Remove(Guid id)
         {
             var entity = await _context.TreasureMaps.SingleAsync(a => a.Id == id);
 

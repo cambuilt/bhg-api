@@ -19,16 +19,5 @@ namespace bhg.Controllers
             _attachmentRepository = attachmentRepository;
         }
 
-        [HttpGet("{attachmentId}", Name = nameof(GetAttachmentById))]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(200)]
-        [Produces(typeof(Gem))]
-        public async Task<ActionResult<Attachment>> GetAttachmentById([FromRoute] int id)
-        {
-            var attachment = await _attachmentRepository.GetAttachmentAsync(id);
-            if (attachment == null) return NotFound();
-
-            return attachment;
-        }
     }
 }

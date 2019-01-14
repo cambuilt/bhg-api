@@ -9,8 +9,8 @@ namespace bhg.Models
 {
     public class AttachmentEntity
     {
-        public int Id { get; set; }
-        public int GemId { get; set; }
+        public Guid Id { get; set; }
+        public Guid GemId { get; set; }
         [Required]
         [StringLength(50)]
         public string Title { get; set; }

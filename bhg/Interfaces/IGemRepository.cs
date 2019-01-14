@@ -8,8 +8,13 @@ namespace bhg.Interfaces
 {
     public interface IGemRepository
     {
-        Task<bool> Exist(int id);
+        Task<bool> Exist(Guid id);
 
-        Task<Gem> GetGemAsync(int gemId);
+        Task<Gem> GetGemAsync(Guid id);
+
+        Task<Guid> CreateGemAsync(
+            Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl);
+
+        Task DeleteGemAsync(Guid gemId);
     }
 }

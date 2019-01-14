@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using bhg.Models;
 using bhg.Interfaces;
+using System;
 
 namespace bhg.Controllers
 {
@@ -23,12 +24,21 @@ namespace bhg.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
         [Produces(typeof(Gem))]
-        public async Task<ActionResult<Gem>> GetGemById([FromRoute] int id)
+        public async Task<ActionResult<Gem>> GetGemById([FromRoute] Guid id)
         {
             var gem = await _gemRepository.GetGemAsync(id);
             if (gem == null) return NotFound();
 
             return gem;
+        }
+
+        // DELETE /gems/{gemId}
+        [HttpDelete("{gemId}", Name = nameof(DeleteGemById))]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> DeleteGemById(Guid gemId)
+        {
+            await _gemRepository.DeleteGemAsync(gemId);
+            return NoContent();
         }
     }
 }

@@ -13,11 +13,11 @@ namespace bhg.Models
         {
             Attachments = new HashSet<Attachment>();
         }
-        public int TreasureMapId { get; set; }
+        public Guid TreasureMapId { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(200)]
         public string Name { get; set; }
-        [StringLength(100)]
+        [StringLength(200)]
         public string Description { get; set; }
         [StringLength(100)]
         public string Address { get; set; }
@@ -25,6 +25,7 @@ namespace bhg.Models
         public double Longitude { get; set; }
         public string Notes { get; set; }
         public string ImageUrl { get; set; }
+        public string MarkerIconUrl { get; set; }
         public DateTimeOffset StartAt { get; set; }
         public DateTimeOffset EndAt { get; set; }
         public DateTime CreateDate { get; set; }
