@@ -15,7 +15,6 @@ namespace bhg.Models
         }
 
         public Guid Id { get; set; }
-
         [Sortable]
         [Searchable]
         [Required]

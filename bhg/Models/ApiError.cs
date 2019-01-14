@@ -20,6 +20,7 @@ namespace bhg.Models
         public ApiError(ModelStateDictionary modelState)
         {
             Message = "Invalid parameters from modelState";
+
             Detail = modelState
                 .FirstOrDefault(x => x.Value.Errors.Any()).Value.Errors
                 .FirstOrDefault().ErrorMessage;

@@ -21,7 +21,6 @@ namespace bhg.Controllers
         private readonly ITreasureMapRepository _treasureMapRepository;
         private readonly IGemRepository _gemRepository;
         private readonly PagingOptions _defaultPagingOptions;
-        //private readonly IOpeningService _openingService;
 
         public TreasureMapsController(ITreasureMapRepository treasureMapRepository, 
             IGemRepository gemRepository,
@@ -30,8 +29,6 @@ namespace bhg.Controllers
             _treasureMapRepository = treasureMapRepository;
             _gemRepository = gemRepository;
             _defaultPagingOptions = defaultPagingOptionsWrapper.Value;
-            //, IOpeningService openingService
-            //_openingService = openingService;
         }
 
         private async Task<bool> TreasureMapExists(Guid id)

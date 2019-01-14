@@ -37,11 +37,13 @@ namespace bhg.Repositories
         }
 
         public async Task<Guid> CreateGemAsync(
+
             Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl)
         {
             var treasureMap = await _context.TreasureMaps
                 .SingleOrDefaultAsync(r => r.Id == treasureMapId);
             if (treasureMap == null) throw new ArgumentException("Invalid treasure map ID.");
+
 
             var id = Guid.NewGuid();
 
