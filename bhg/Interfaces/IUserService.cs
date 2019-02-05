@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using bhg.Models;
 using bhg.Helpers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace bhg.Interfaces
 {
@@ -11,7 +13,7 @@ namespace bhg.Interfaces
     {
         User Authenticate(string username, string password);
         IEnumerable<User> GetAll();
-        User GetById(Guid id);
+        Task<User> GetById(Guid id);
         Task<Guid> CreateAsync(User user, string password);
         void Update(User user, string password = null);
         void Delete(Guid id);
@@ -44,15 +46,22 @@ namespace bhg.Interfaces
             // authentication successful
             return user;
         }
-
         public IEnumerable<User> GetAll()
         {
             return _context.Users;
         }
 
-        public User GetById(Guid id)
+        public async Task<User> GetById(Guid id)
         {
-            return _context.Users.Find(id);
+            if (_context.Users.Count() == 0) {
+                IQueryable<User> query = _context.Users;
+                var users = await query.ToArrayAsync();
+                _context.Users.AddRange(users);
+            }
+            var user = _context.Users.SingleOrDefault(b => b.Id == id);
+            if (user == null) return null;
+
+            return user;
         }
         public async Task<Guid> CreateAsync(User user, string password)
         {

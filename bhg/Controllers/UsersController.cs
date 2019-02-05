@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using System.IdentityModel.Tokens.Jwt;
-using WebApi.Helpers;
 using Microsoft.Extensions.Options;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using bhg.Dtos;
 using bhg.Models;
+using bhg.Helpers;
 using bhg.Interfaces;
 using System.Threading.Tasks;
 
@@ -82,10 +82,7 @@ namespace bhg.Controllers
             {
                 // save 
                 var userId = await _userService.CreateAsync(user, userDto.Password);
-                return Created(
-                    Url.Link(nameof(UsersController.GetById),
-                    new { userId }),
-                    null);
+                return Created("", null);
             } 
             catch(AppException ex)
             {
@@ -94,7 +91,7 @@ namespace bhg.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet(Name = nameof(GetAll))]
         public IActionResult GetAll()
         {
             var users =  _userService.GetAll();
@@ -102,15 +99,18 @@ namespace bhg.Controllers
             return Ok(userDtos);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        [HttpGet("{id}", Name = nameof(GetById))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [Produces(typeof(User))]
+        public async Task<ActionResult<User>> GetById([FromRoute] Guid id)
         {
-            var user =  _userService.GetById(id);
+            var user = await _userService.GetById(id);
             var userDto = _mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}", Name = nameof(Update))]
         public IActionResult Update(Guid id, [FromBody]UserDto userDto)
         {
             // map dto to entity and set id
@@ -130,7 +130,7 @@ namespace bhg.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = nameof(Delete))]
         public IActionResult Delete(Guid id)
         {
             _userService.Delete(id);
