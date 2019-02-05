@@ -36,6 +36,16 @@ namespace bhg.Repositories
 
         }
 
+        public async Task<GemEntity> GetGemEntityAsync(Guid id)
+        {
+            var entity = await _context.Gems.SingleOrDefaultAsync(b => b.Id == id);
+
+            if (entity == null) return null;
+
+            return entity;
+
+        }
+
         public async Task<Guid> CreateGemAsync(
 
             Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl)
@@ -67,6 +77,12 @@ namespace bhg.Repositories
             if (created < 1) throw new InvalidOperationException("Could not create gem.");
 
             return id;
+        }
+
+        public async Task UpdateGemAsync(GemEntity gemEntity)
+        {
+            _context.Update(gemEntity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteGemAsync(Guid gemId)

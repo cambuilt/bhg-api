@@ -13,6 +13,7 @@ namespace bhg.Models
         {
             Attachments = new HashSet<Attachment>();
         }
+        public Guid Id { get; set; }
         public Guid TreasureMapId { get; set; }
         [Required]
         [StringLength(200)]

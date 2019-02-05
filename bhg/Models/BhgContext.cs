@@ -11,6 +11,7 @@ namespace bhg.Models
         public virtual DbSet<TreasureMapEntity> TreasureMaps { get; set; }
         public virtual DbSet<GemEntity> Gems { get; set; }
         public virtual DbSet<AttachmentEntity> Attachments { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         public BhgContext(DbContextOptions options) : base(options) { }
 

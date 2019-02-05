@@ -70,9 +70,9 @@ namespace bhg.Repositories
             SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
         {
             IQueryable<TreasureMapEntity> query = _context.TreasureMaps;
-            query = searchOptions.Apply(query);
-            query = sortOptions.Apply(query);
-
+            if (searchOptions.Search != null) { query = searchOptions.Apply(query); }
+            if (sortOptions.OrderBy != null) { query = sortOptions.Apply(query); }
+           
             var size = await query.CountAsync();
 
             var items = await query

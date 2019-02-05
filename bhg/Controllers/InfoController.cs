@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace bhg.Controllers
 {
+    [Produces("application/json")]
     [Route("/[controller]")]
     [ApiController]
     public class InfoController : ControllerBase
@@ -22,6 +23,7 @@ namespace bhg.Controllers
 
         [HttpGet(Name = nameof(GetInfo))]
         [ProducesResponseType(200)]
+        [ResponseCache(CacheProfileName = "Static")]  // 1 day
         public ActionResult<AppInfo> GetInfo()
         {
             _appInfo.Href = Url.Link(nameof(GetInfo), null);

@@ -12,7 +12,11 @@ namespace bhg.Interfaces
 
         Task<Gem> GetGemAsync(Guid id);
 
+        Task<GemEntity> GetGemEntityAsync(Guid id);
+
         Task<Guid> CreateGemAsync(Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl);
+
+        Task UpdateGemAsync(GemEntity gemEntity);
 
         Task DeleteGemAsync(Guid gemId);
     }

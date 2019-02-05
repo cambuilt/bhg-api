@@ -40,5 +40,27 @@ namespace bhg.Controllers
             await _gemRepository.DeleteGemAsync(gemId);
             return NoContent();
         }
+
+        // PUT /gems/{gemId}
+        [HttpPut("{gemId}", Name = nameof(UpdateGemById))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(204)]
+        public async Task<ActionResult> UpdateGemById(Guid gemId, [FromBody] GemForm gemForm)
+        {
+            var entity = await _gemRepository.GetGemEntityAsync(gemId);
+            if (entity == null) return NotFound();
+
+            entity.Name = gemForm.Name;
+            entity.Address = gemForm.Address;
+            entity.Description = gemForm.Description;
+            entity.Latitude = gemForm.Latitude;
+            entity.Longitude = gemForm.Longitude;
+            entity.Notes = gemForm.Notes;
+            entity.ImageUrl = gemForm.ImageUrl;
+            entity.MarkerIconUrl = gemForm.MarkerIconUrl;
+
+            await _gemRepository.UpdateGemAsync(entity);
+            return NoContent();
+        }
     }
 }
