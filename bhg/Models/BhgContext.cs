@@ -17,6 +17,19 @@ namespace bhg.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(50)
+                    .IsUnicode(true);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsUnicode(true);
+            });
+
             modelBuilder.Entity<TreasureMapEntity>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
