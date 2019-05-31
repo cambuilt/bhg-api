@@ -88,11 +88,11 @@ namespace bhg.Repositories
 
         public async Task DeleteGemAsync(Guid gemId)
         {
-            var booking = await _context.Gems
+            var gem = await _context.Gems
                 .SingleOrDefaultAsync(b => b.Id == gemId);
-            if (booking == null) return;
+            if (gem == null) return;
 
-            _context.Gems.Remove(booking);
+            _context.Gems.Remove(gem);
             await _context.SaveChangesAsync();
         }
     }
