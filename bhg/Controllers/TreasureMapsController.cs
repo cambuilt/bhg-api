@@ -97,7 +97,7 @@ namespace bhg.Controllers
             }
 
             var gemId = await _gemRepository.CreateGemAsync(
-                treasureMapId, gemForm.Name, gemForm.Description, gemForm.Address, gemForm.Latitude, gemForm.Longitude, gemForm.Notes, gemForm.ImageUrl, gemForm.MarkerIconUrl);
+                treasureMapId, gemForm.Name, gemForm.Description, gemForm.Address, gemForm.Latitude, gemForm.Longitude, gemForm.Notes, gemForm.ImageUrl, gemForm.MarkerIconUrl, gemForm.Website);
 
             return Created(
                 Url.Link(nameof(GemsController.GetGemById),

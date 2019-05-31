@@ -58,6 +58,7 @@ namespace bhg.Controllers
             entity.Notes = gemForm.Notes;
             entity.ImageUrl = gemForm.ImageUrl;
             entity.MarkerIconUrl = gemForm.MarkerIconUrl;
+            entity.Website = gemForm.Website;
 
             await _gemRepository.UpdateGemAsync(entity);
             return NoContent();

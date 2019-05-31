@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace bhg.Controllers
 {
-    [Authorize("Bearer")]
+    //[Authorize("Bearer")]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase

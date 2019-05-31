@@ -14,7 +14,7 @@ namespace bhg.Interfaces
 
         Task<GemEntity> GetGemEntityAsync(Guid id);
 
-        Task<Guid> CreateGemAsync(Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl);
+        Task<Guid> CreateGemAsync(Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl, string website);
 
         Task UpdateGemAsync(GemEntity gemEntity);
 

@@ -20,5 +20,6 @@ namespace bhg.Models
         public string Notes { get; set; }
         public string ImageUrl { get; set; }
         public string MarkerIconUrl { get; set; }
+        public string Website { get; set; }
     }
 }
