@@ -29,7 +29,9 @@ namespace bhg.Models
         public double LongitudeDelta { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
-
+        public string Website { get; set; }
+        public int Zoom { get; set; }
+        public string Comments { get; set; }
         public ICollection<GemEntity> Gems { get; set; }
     }
 }
