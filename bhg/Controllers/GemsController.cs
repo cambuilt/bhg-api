@@ -20,7 +20,7 @@ namespace bhg.Controllers
             _gemRepository = gemRepository;
         }
 
-        [HttpGet("{gemId}", Name = nameof(GetGemById))]
+        [HttpGet("{id}", Name = nameof(GetGemById))]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
         [Produces(typeof(Gem))]
@@ -28,7 +28,17 @@ namespace bhg.Controllers
         {
             var gem = await _gemRepository.GetGemAsync(id);
             if (gem == null) return NotFound();
+            return gem;
+        }
 
+        [HttpGet(Name = nameof(GetGemByPlusCode))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [Produces(typeof(Gem))]
+        public async Task<ActionResult<Gem>> GetGemByPlusCode(string areaCode, string localCode)
+        {
+            var gem = await _gemRepository.GetGemAsync(areaCode, localCode);
+            if (gem == null) return NotFound();
             return gem;
         }
 

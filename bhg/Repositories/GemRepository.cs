@@ -20,12 +20,10 @@ namespace bhg.Repositories
             _context = context;
             _mapper = mapper;
         }
-
         public async Task<bool> Exist(Guid id)
         {
             return await _context.Gems.AnyAsync(c => c.Id == id);
         }
-
         public async Task<Gem> GetGemAsync(Guid id)
         {
             var entity = await _context.Gems.SingleOrDefaultAsync(b => b.Id == id);
@@ -33,9 +31,17 @@ namespace bhg.Repositories
             if (entity == null) return null;
 
             return _mapper.Map<Gem>(entity);
-
         }
+        public async Task<Gem> GetGemAsync(string areaCode, string localCode)
+        {
+            var plusCodeLocal = new PlusCodeLocalEntity();
+            plusCodeLocal.LocalCode = localCode;
+            var entity = await _context.Gems.SingleOrDefaultAsync(b => b.PlusCodeArea == areaCode && b.PlusCodeLocals.Where(p => p.LocalCode == localCode).Count() > 0);
 
+            if (entity == null) return null;
+
+            return _mapper.Map<Gem>(entity);
+        }
         public async Task<GemEntity> GetGemEntityAsync(Guid id)
         {
             var entity = await _context.Gems.SingleOrDefaultAsync(b => b.Id == id);
@@ -43,17 +49,14 @@ namespace bhg.Repositories
             if (entity == null) return null;
 
             return entity;
-
         }
-
         public async Task<Guid> CreateGemAsync(
 
-            Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl, string website)
+            Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl, string website, string plusCodeArea)
         {
             var treasureMap = await _context.TreasureMaps
                 .SingleOrDefaultAsync(r => r.Id == treasureMapId);
             if (treasureMap == null) throw new ArgumentException("Invalid treasure map ID.");
-
 
             var id = Guid.NewGuid();
 
@@ -70,6 +73,7 @@ namespace bhg.Repositories
                 ImageUrl = imageUrl,
                 MarkerIconUrl = markerIconUrl,
                 Website = website,
+                PlusCodeArea = plusCodeArea,
                 CreateDate = DateTime.Now,
                 ModDate = DateTime.Now
             });

@@ -12,6 +12,7 @@ namespace bhg.Models
         public GemEntity()
         {
             Attachments = new HashSet<AttachmentEntity>();
+            PlusCodeLocals = new HashSet<PlusCodeLocalEntity>();
         }
         [Key]
         public Guid Id { get; set; }
@@ -30,11 +31,13 @@ namespace bhg.Models
         public string MarkerIconUrl { get; set; }
         public string Website { get; set; }
         public DateTime CreateDate { get; set; }
+        public string PlusCodeArea { get; set; }
         public DateTime? ModDate { get; set; }
 
         [ForeignKey("TreasureMapId")]
         public TreasureMapEntity TreasureMap { get; set; }
 
+        public ICollection<PlusCodeLocalEntity> PlusCodeLocals { get; set; }
         public ICollection<AttachmentEntity> Attachments { get; set; }
     }
 }

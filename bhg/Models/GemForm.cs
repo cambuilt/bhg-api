@@ -21,5 +21,6 @@ namespace bhg.Models
         public string ImageUrl { get; set; }
         public string MarkerIconUrl { get; set; }
         public string Website { get; set; }
+        public string PlusCodeArea { get; set; }
     }
 }

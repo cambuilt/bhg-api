@@ -12,6 +12,7 @@ namespace bhg.Models
         public virtual DbSet<GemEntity> Gems { get; set; }
         public virtual DbSet<AttachmentEntity> Attachments { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<PlusCodeLocalEntity> PlusCodeLocals { get; set; }
 
         public BhgContext(DbContextOptions options) : base(options) { }
 
@@ -101,6 +102,23 @@ namespace bhg.Models
                 .HasForeignKey(d => d.GemId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Attachments_GemId");
+            });
+
+            modelBuilder.Entity<PlusCodeLocalEntity>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.GemId).HasColumnName("GemId");
+
+                entity.Property(e => e.LocalCode)
+                    .HasMaxLength(7)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Gem)
+                .WithMany(p => p.PlusCodeLocals)
+                .HasForeignKey(d => d.GemId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PlusCodeLocals_GemId");
             });
         }
     }
