@@ -42,6 +42,7 @@ namespace bhg.Models
         public string Website { get; set; }
         public int Zoom { get; set; }
         public string Comments { get; set; }
+        public string BannerImageUrl { get; set; }
         public ICollection<Gem> Gems { get; set; }
 
         public Form Gem { get; set; }

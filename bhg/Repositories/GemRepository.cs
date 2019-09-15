@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 
@@ -32,27 +33,27 @@ namespace bhg.Repositories
 
             return _mapper.Map<Gem>(entity);
         }
-        public async Task<Gem> GetGemAsync(string areaCode, string localCode)
+        public async Task<List<GemEntity>> GetGemsByLatLngAsync(double lat, double lng)
         {
-            var plusCodeLocal = new PlusCodeLocalEntity();
-            plusCodeLocal.LocalCode = localCode;
-            var entity = await _context.Gems.SingleOrDefaultAsync(b => b.PlusCodeArea == areaCode && b.PlusCodeLocals.Where(p => p.LocalCode == localCode).Count() > 0);
+            IQueryable<GemEntity> query = _context.Gems;
 
-            if (entity == null) return null;
+            foreach(var gem in _context.Gems)
+            {
+                var dist = gem.Name + ":" + distance(gem.Latitude, gem.Longitude, lat, lng, 'K').ToString();
+                Console.WriteLine(dist);
+            }
 
-            return _mapper.Map<Gem>(entity);
+            var items = await query
+                .Where(x => distance(x.Latitude, x.Longitude, lat, lng, 'K') < 0.1)
+                .OrderBy(x => distance(x.Latitude, x.Longitude, lat, lng, 'K'))
+                .ToListAsync();
+
+            return items;
         }
-        public async Task<GemEntity> GetGemEntityAsync(Guid id)
-        {
-            var entity = await _context.Gems.SingleOrDefaultAsync(b => b.Id == id);
 
-            if (entity == null) return null;
-
-            return entity;
-        }
         public async Task<Guid> CreateGemAsync(
 
-            Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl, string website, string plusCodeArea)
+            Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl, string website)
         {
             var treasureMap = await _context.TreasureMaps
                 .SingleOrDefaultAsync(r => r.Id == treasureMapId);
@@ -73,7 +74,6 @@ namespace bhg.Repositories
                 ImageUrl = imageUrl,
                 MarkerIconUrl = markerIconUrl,
                 Website = website,
-                PlusCodeArea = plusCodeArea,
                 CreateDate = DateTime.Now,
                 ModDate = DateTime.Now
             });
@@ -98,6 +98,55 @@ namespace bhg.Repositories
 
             _context.Gems.Remove(gem);
             await _context.SaveChangesAsync();
+        }
+
+        private double distance(double lat1, double lon1, double lat2, double lon2, char unit)
+        {
+            if ((lat1 == lat2) && (lon1 == lon2))
+            {
+                return 0;
+            }
+            else
+            {
+                double theta = lon1 - lon2;
+                double dist = Math.Sin(deg2rad(lat1)) * Math.Sin(deg2rad(lat2)) + Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) * Math.Cos(deg2rad(theta));
+                dist = Math.Acos(dist);
+                dist = rad2deg(dist);
+                dist = dist * 60 * 1.1515;
+                if (unit == 'K')
+                {
+                    dist = dist * 1.609344;
+                }
+                else if (unit == 'N')
+                {
+                    dist = dist * 0.8684;
+                }
+                return (dist);
+            }
+        }
+
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        //::  This function converts decimal degrees to radians             :::
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        private double deg2rad(double deg)
+        {
+            return (deg * Math.PI / 180.0);
+        }
+
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        //::  This function converts radians to decimal degrees             :::
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        private double rad2deg(double rad)
+        {
+            return (rad / Math.PI * 180.0);
+        }
+        public async Task<GemEntity> GetGemEntityAsync(Guid id)
+        {
+            var entity = await _context.Gems.SingleOrDefaultAsync(b => b.Id == id);
+
+            if (entity == null) return null;
+
+            return entity;
         }
     }
 }

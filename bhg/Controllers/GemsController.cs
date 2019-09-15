@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using bhg.Models;
 using bhg.Interfaces;
@@ -31,17 +32,17 @@ namespace bhg.Controllers
             return gem;
         }
 
-        [HttpGet(Name = nameof(GetGemByPlusCode))]
+        [HttpGet("latlng/{latlng}", Name = nameof(GetGemsByLatLng))]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        [Produces(typeof(Gem))]
-        public async Task<ActionResult<Gem>> GetGemByPlusCode(string areaCode, string localCode)
+        public async Task<ActionResult<List<GemEntity>>> GetGemsByLatLng([FromRoute] string latLng)
         {
-            var gem = await _gemRepository.GetGemAsync(areaCode, localCode);
-            if (gem == null) return NotFound();
-            return gem;
-        }
+            double lat = double.Parse(latLng.Split(",")[0]);
+            double lng = double.Parse(latLng.Split(",")[1]);
+            List<GemEntity> gems = await _gemRepository.GetGemsByLatLngAsync(lat, lng);
 
+            return gems;
+        }
         // DELETE /gems/{gemId}
         [HttpDelete("{gemId}", Name = nameof(DeleteGemById))]
         [ProducesResponseType(204)]
