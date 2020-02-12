@@ -1,11 +1,9 @@
 ﻿using bhg.Interfaces;
 using bhg.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 
@@ -52,7 +50,6 @@ namespace bhg.Repositories
         }
 
         public async Task<Guid> CreateGemAsync(
-
             Guid treasureMapId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl, string website)
         {
             var treasureMap = await _context.TreasureMaps

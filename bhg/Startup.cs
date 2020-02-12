@@ -42,6 +42,8 @@ namespace bhg
             services.Configure<PagingOptions>(Configuration.GetSection("DefaultPagingOptions"));
             services.AddScoped<ITreasureMapRepository, TreasureMapRepository>();
             services.AddScoped<IGemRepository, GemRepository>();
+            services.AddScoped<IIconRepository, IconRepository>();
+            services.AddScoped<IRouteLineRepository, RouteLineRepository>();
             services.AddScoped<IAttachmentRepository, AttachmentRepository>();
             services.AddScoped<IUserService, UserService>();
             // services.AddRouting(options => options.LowercaseUrls = true);

@@ -24,6 +24,10 @@ namespace bhg.Infrastructure
             CreateMap<GemEntity, Gem>()
                 .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
                     Link.To(nameof(Controllers.GemsController.GetGemById), new {gemId = src.Id })));
+
+            CreateMap<IconEntity, Icon>()
+                .ForMember(dest => dest.Self, opt => opt.MapFrom(src =>
+                    Link.To(nameof(Controllers.IconsController.GetIconById), new { iconId = src.Id })));
         }
 
         private string Capitalize(string text)

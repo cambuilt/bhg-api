@@ -34,5 +34,6 @@ namespace bhg.Models
         public string Comments { get; set; }
         public string BannerImageUrl { get; set; }
         public ICollection<GemEntity> Gems { get; set; }
+        public ICollection<RouteLineEntity> RouteLines { get; set; }
     }
 }

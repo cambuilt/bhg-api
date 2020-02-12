@@ -10,8 +10,10 @@ namespace bhg.Models
     {
         public virtual DbSet<TreasureMapEntity> TreasureMaps { get; set; }
         public virtual DbSet<GemEntity> Gems { get; set; }
+        public virtual DbSet<RouteLineEntity> RouteLines { get; set; }
         public virtual DbSet<AttachmentEntity> Attachments { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<IconEntity> Icons { get; set; }
         public BhgContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -79,6 +81,21 @@ namespace bhg.Models
                 .HasConstraintName("FK_Gems_TreasureMapId");
             });
 
+            modelBuilder.Entity<RouteLineEntity>(entity =>
+            {
+                entity.Property(e => e.TreasureMapId).HasColumnName("TreasureMapId");
+                entity.Property(e => e.StartLatitude).HasColumnType("double");
+                entity.Property(e => e.StartLongitude).HasColumnType("double");
+                entity.Property(e => e.EndLatitude).HasColumnType("double");
+                entity.Property(e => e.EndLongitude).HasColumnType("double");
+
+                entity.HasOne(d => d.TreasureMap)
+                .WithMany(p => p.RouteLines)
+                .HasForeignKey(d => d.TreasureMapId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RouteLines_TreasureMapId");
+            });
+
             modelBuilder.Entity<AttachmentEntity>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
@@ -100,6 +117,17 @@ namespace bhg.Models
                 .HasForeignKey(d => d.GemId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Attachments_GemId");
+            });
+
+            modelBuilder.Entity<IconEntity>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("Id");
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.Url)
+                    .HasMaxLength(500)
+                    .IsUnicode(true);
             });
         }
     }

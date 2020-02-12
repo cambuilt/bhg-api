@@ -20,14 +20,16 @@ namespace bhg.Controllers
     {
         private readonly ITreasureMapRepository _treasureMapRepository;
         private readonly IGemRepository _gemRepository;
+        private readonly IRouteLineRepository _routeLineRepository;
         private readonly PagingOptions _defaultPagingOptions;
 
         public TreasureMapsController(ITreasureMapRepository treasureMapRepository, 
-            IGemRepository gemRepository,
+            IGemRepository gemRepository, IRouteLineRepository routeLineRepository, 
             IOptions<PagingOptions> defaultPagingOptionsWrapper)
         {
             _treasureMapRepository = treasureMapRepository;
             _gemRepository = gemRepository;
+            _routeLineRepository = routeLineRepository;
             _defaultPagingOptions = defaultPagingOptionsWrapper.Value;
         }
 
@@ -101,6 +103,23 @@ namespace bhg.Controllers
 
             return Created(
                 Url.Link(nameof(GemsController.GetGemById), new { id = gemId }), gemId);
+        }
+
+        // POST /treasuremaps/{treasureMapId}/routeLines
+        [HttpPost("{treasureMapId}/routeLines", Name = nameof(CreateRouteLineForTreasureMapAsync))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> CreateRouteLineForTreasureMapAsync(
+            Guid treasureMapId, [FromBody] RouteLineForm routeLineForm)
+        {
+            var treasureMap = await _treasureMapRepository.GetTreasureMapAsync(treasureMapId);
+            if (treasureMap == null) return NotFound();
+
+            var nullValue = await _routeLineRepository.CreateRouteLineAsync(
+                treasureMapId, routeLineForm.StartLatitude, routeLineForm.StartLongitude, routeLineForm.EndLatitude, routeLineForm.EndLongitude);
+
+            return Created("", null);
         }
     }
 }

@@ -31,6 +31,9 @@ namespace bhg.Models
 
         [ForeignKey("TreasureMapId")]
         public TreasureMapEntity TreasureMap { get; set; }
+        
+        [ForeignKey("IconId")]
+        public IconEntity Icon { get; set; }
 
         public ICollection<AttachmentEntity> Attachments { get; set; }
     }
