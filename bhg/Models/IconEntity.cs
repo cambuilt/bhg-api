@@ -15,5 +15,6 @@ namespace bhg.Models
         public string Name { get; set; }
         [Required]
         public string Url { get; set; }
+        public ICollection<GemEntity> Gems { get; set; }
     }
 }

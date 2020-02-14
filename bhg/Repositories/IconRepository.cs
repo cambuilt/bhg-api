@@ -37,16 +37,16 @@ namespace bhg.Repositories
 
             return entity;
         }
-
         public async Task<PagedResults<Icon>> GetStringIconsAsync()
         {
             IQueryable<IconEntity> query = _context.Icons;
 
             var size = await query.CountAsync();
-            var y = 0;
+            var y = 0f;
 
             var items = await query
-                .Where(x => int.TryParse(x.Name.Replace("-", ""), out y) == false)
+                .Where(x => float.TryParse(x.Name.Replace("-", ""), out y) == false)
+                .OrderBy(p => p.Name)
                 .ProjectTo<Icon>(_mappingConfiguration)
                 .ToArrayAsync();
 
@@ -56,8 +56,6 @@ namespace bhg.Repositories
                 TotalSize = size
             };
         }
-
-
         public async Task<Guid> CreateIconAsync(string name, string url)
         {
             var id = Guid.NewGuid();

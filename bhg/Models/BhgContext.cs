@@ -58,6 +58,7 @@ namespace bhg.Models
             modelBuilder.Entity<GemEntity>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
+                entity.Property(e => e.IconId).HasColumnName("IconId");
 
                 entity.Property(e => e.TreasureMapId).HasColumnName("TreasureMapId");
 
@@ -79,6 +80,10 @@ namespace bhg.Models
                 .HasForeignKey(d => d.TreasureMapId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Gems_TreasureMapId");
+
+                entity.HasOne(a => a.Icon)
+                .WithMany(b => b.Gems)
+                .HasForeignKey(c => c.IconId);
             });
 
             modelBuilder.Entity<RouteLineEntity>(entity =>
@@ -127,8 +132,19 @@ namespace bhg.Models
                     .IsUnicode(false);
                 entity.Property(e => e.Url)
                     .HasMaxLength(500)
-                    .IsUnicode(true);
+                    .IsUnicode(true);                
             });
+
+            //modelBuilder.Entity<IconEntity>()
+            //    .HasMany(a => a.Gems)
+            //    .WithOne(b => b.Icon)
+            //    .HasForeignKey(c => c.IconId);
+
+            //modelBuilder.Entity<GemEntity>()
+            //    .HasOne(a => a.Icon)
+            //    .WithMany(b => b.Gems)
+            //    .HasForeignKey(c => c.IconId);
+
         }
     }
 }

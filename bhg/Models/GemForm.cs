@@ -8,6 +8,7 @@ namespace bhg.Models
 {
     public class GemForm
     {
+        public Guid IconId { get; set; }
         [Display(Name = "name", Description = "Gem name (optional)")]
         public string Name { get; set; }
         [Display(Name = "description", Description = "Gem description (optional, maximum 100 characters)")]

@@ -61,6 +61,7 @@ namespace bhg.Controllers
             var entity = await _gemRepository.GetGemEntityAsync(gemId);
             if (entity == null) return NotFound();
 
+            entity.IconId = gemForm.IconId;
             entity.Name = gemForm.Name;
             entity.Address = gemForm.Address;
             entity.Description = gemForm.Description;

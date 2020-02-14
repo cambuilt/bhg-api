@@ -24,14 +24,14 @@ namespace bhg.Models
         public double Longitude { get; set; }
         public string Notes { get; set; }
         public string ImageUrl { get; set; }
+        public Guid IconId { get; set; }
         public string MarkerIconUrl { get; set; }
         public string Website { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
 
         [ForeignKey("TreasureMapId")]
-        public TreasureMapEntity TreasureMap { get; set; }
-        
+        public TreasureMapEntity TreasureMap { get; set; }        
         [ForeignKey("IconId")]
         public IconEntity Icon { get; set; }
 
