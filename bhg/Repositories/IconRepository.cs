@@ -29,6 +29,14 @@ namespace bhg.Repositories
 
             return _mapper.Map<Icon>(entity);
         }
+        public async Task<Icon> GetIconAsync(string name)
+        {
+            var entity = await _context.Icons.SingleOrDefaultAsync(b => b.Name == name);
+
+            if (entity == null) return null;
+
+            return _mapper.Map<Icon>(entity);
+        }
         public async Task<IconEntity> GetIconEntityAsync(Guid id)
         {
             var entity = await _context.Icons.SingleOrDefaultAsync(b => b.Id == id);

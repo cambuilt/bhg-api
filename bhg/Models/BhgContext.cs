@@ -134,17 +134,6 @@ namespace bhg.Models
                     .HasMaxLength(500)
                     .IsUnicode(true);                
             });
-
-            //modelBuilder.Entity<IconEntity>()
-            //    .HasMany(a => a.Gems)
-            //    .WithOne(b => b.Icon)
-            //    .HasForeignKey(c => c.IconId);
-
-            //modelBuilder.Entity<GemEntity>()
-            //    .HasOne(a => a.Icon)
-            //    .WithMany(b => b.Gems)
-            //    .HasForeignKey(c => c.IconId);
-
         }
     }
 }

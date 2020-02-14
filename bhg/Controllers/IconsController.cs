@@ -32,6 +32,17 @@ namespace bhg.Controllers
             return icon;
         }
 
+        [HttpGet("{name}", Name = nameof(GetIconByName))]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [Produces(typeof(Icon))]
+        public async Task<ActionResult<Icon>> GetIconByName([FromRoute] string name)
+        {
+            var icon = await _iconRepository.GetIconAsync(id);
+            if (icon == null) return NotFound();
+            return icon;
+        }
+
         [HttpGet(Name = nameof(GetStringIcons))]
         [ProducesResponseType(400)]
         [ProducesResponseType(200)]

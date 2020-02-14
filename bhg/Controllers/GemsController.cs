@@ -69,7 +69,6 @@ namespace bhg.Controllers
             entity.Longitude = gemForm.Longitude;
             entity.Notes = gemForm.Notes;
             entity.ImageUrl = gemForm.ImageUrl;
-            entity.MarkerIconUrl = gemForm.MarkerIconUrl;
             entity.Website = gemForm.Website;
 
             await _gemRepository.UpdateGemAsync(entity);

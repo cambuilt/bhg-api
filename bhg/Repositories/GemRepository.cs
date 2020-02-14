@@ -50,7 +50,7 @@ namespace bhg.Repositories
         }
 
         public async Task<Guid> CreateGemAsync(
-            Guid treasureMapId, Guid iconId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string markerIconUrl, string website)
+            Guid treasureMapId, Guid iconId, string name, string description, string address, double latitude, double longitude, string notes, string imageUrl, string website)
         {
             var treasureMap = await _context.TreasureMaps
                 .SingleOrDefaultAsync(r => r.Id == treasureMapId);
@@ -70,7 +70,6 @@ namespace bhg.Repositories
                 Longitude = longitude,
                 Notes = notes,
                 ImageUrl = imageUrl,
-                MarkerIconUrl = markerIconUrl,
                 Website = website,
                 CreateDate = DateTime.Now,
                 ModDate = DateTime.Now

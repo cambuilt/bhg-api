@@ -9,6 +9,7 @@ namespace bhg.Interfaces
     public interface IIconRepository
     {
         Task<Icon> GetIconAsync(Guid id);
+        Task<Icon> GetIconAsync(string name);
         Task<IconEntity> GetIconEntityAsync(Guid id);
         Task<PagedResults<Icon>> GetStringIconsAsync();
         Task<Guid> CreateIconAsync(string name, string url);
