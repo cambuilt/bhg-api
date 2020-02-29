@@ -9,6 +9,7 @@ namespace bhg.Models
 {
     public class Gem : Resource
     {
+        string _imageUrl;
         public Gem()
         {
             Attachments = new HashSet<Attachment>();
@@ -22,9 +23,23 @@ namespace bhg.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Notes { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set {
+                if (value.Length < 30) {
+                    _imageUrl = "/assets/photos/" + value;
+                } else {
+                    _imageUrl = value;
+                }
+            }
+        }
         public Guid IconId { get; set; }
         public string Website { get; set; }
+        public string Phone { get; set; }
+        public string YelpUrl { get; set; }
+        public string GoogleUrl { get; set; }
+        public string MenuUrl { get; set; }
         public DateTimeOffset StartAt { get; set; }
         public DateTimeOffset EndAt { get; set; }
         public DateTime CreateDate { get; set; }

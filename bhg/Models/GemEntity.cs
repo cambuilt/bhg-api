@@ -26,6 +26,10 @@ namespace bhg.Models
         public string ImageUrl { get; set; }
         public Guid IconId { get; set; }
         public string Website { get; set; }
+        public string Phone { get; set; }
+        public string YelpUrl { get; set; }
+        public string GoogleUrl { get; set; }
+        public string MenuUrl { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
 

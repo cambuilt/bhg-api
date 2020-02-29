@@ -8,7 +8,7 @@ namespace bhg.Models
 {
     public partial class BhgContext : DbContext
     {
-        public virtual DbSet<TreasureMapEntity> TreasureMaps { get; set; }
+        public virtual DbSet<TreasureMap> TreasureMaps { get; set; }
         public virtual DbSet<GemEntity> Gems { get; set; }
         public virtual DbSet<RouteLineEntity> RouteLines { get; set; }
         public virtual DbSet<AttachmentEntity> Attachments { get; set; }
@@ -34,6 +34,7 @@ namespace bhg.Models
             modelBuilder.Entity<TreasureMapEntity>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
+                entity.Property(e => e.Id).HasColumnName("Area");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -51,8 +52,6 @@ namespace bhg.Models
                 entity.Property(e => e.LatitudeDelta).HasColumnType("double");
                 entity.Property(e => e.Longitude).HasColumnType("double");
                 entity.Property(e => e.LongitudeDelta).HasColumnType("double");
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-                entity.Property(e => e.ModDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<GemEntity>(entity =>

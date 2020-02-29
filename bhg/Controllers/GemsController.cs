@@ -70,6 +70,10 @@ namespace bhg.Controllers
             entity.Notes = gemForm.Notes;
             entity.ImageUrl = gemForm.ImageUrl;
             entity.Website = gemForm.Website;
+            entity.Phone = gemForm.Phone;
+            entity.YelpUrl = gemForm.YelpUrl;
+            entity.GoogleUrl = gemForm.GoogleUrl;
+            entity.MenuUrl = gemForm.MenuUrl;
 
             await _gemRepository.UpdateGemAsync(entity);
             return NoContent();

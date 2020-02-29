@@ -20,90 +20,43 @@ namespace bhg.Repositories
             _context = context;
             _mappingConfiguration = mappingConfiguration;
         }
-
-        public async Task<TreasureMapEntity> Add(TreasureMapEntity treasureMap)
+        public void Add(TreasureMap treasureMap)
         {
-            await _context.TreasureMaps.AddAsync(treasureMap);
-            await _context.SaveChangesAsync();
-            return treasureMap;
+            _context.TreasureMaps.Add(treasureMap);            
         }
-
-        public async Task<bool> Exist(Guid id)
+        public void Delete(TreasureMap treasureMap)
         {
-            return await _context.TreasureMaps.AnyAsync(c => c.Id == id);
+            _context.TreasureMaps.Remove(treasureMap);
         }
-
-        //public async Task<TreasureMap> Find(int id)
-        //{
-            //var treasureMap = await _context.TreasureMap.Include(tm => tm.Gem).SingleOrDefaultAsync(a => a.TreasureMapId == id);
-
-            //if (treasureMap == null)
-            //{
-            //    return null;
-            //}
-
-            //return _mapper.Map<TreasureMap>(treasureMap);
-        //}
-
-        public async Task<TreasureMap> GetTreasureMapAsync(Guid id)
+        public async Task<TreasureMap[]> GetAllTreasureMapsAsync(bool includeGems = false)
         {
-            var entity = await _context.TreasureMaps.SingleOrDefaultAsync(x => x.Id == id);
+            IQueryable<TreasureMap> query = _context.TreasureMaps;
 
-            if (entity == null)
+            if (includeGems)
             {
-                return null;
+                query = query.Include(c => c.Gems);
             }
 
-            var mapper = _mappingConfiguration.CreateMapper();
-            return mapper.Map<TreasureMap>(entity);
+            // Order It
+            query = query.OrderBy(c => c.Name);
+
+            return await query.ToArrayAsync();
         }
 
-        public IEnumerable<TreasureMapEntity> GetAll()
+        public async Task<TreasureMap> GetTreasureMapAsync(string name, bool includeGems = false)
         {
-            //_context.TreasureMap.Include(treasureMap => treasureMap.Gem).ToList();    // Eager loading of gems
-            return _context.TreasureMaps;
-        }
+            IQueryable<TreasureMap> query = _context.TreasureMaps;
 
-        public async Task<PagedResults<TreasureMap>> GetTreasureMapsAsync(
-            PagingOptions pagingOptions, 
-            SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
-            SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
-        {
-            IQueryable<TreasureMapEntity> query = _context.TreasureMaps;
-            if (searchOptions.Search != null) { query = searchOptions.Apply(query); }
-            if (sortOptions.OrderBy != null) { query = sortOptions.Apply(query); }
-           
-            var size = await query.CountAsync();
-
-            var items = await query
-                .Skip(pagingOptions.Offset.Value)
-                .Take(pagingOptions.Limit.Value)
-                .ProjectTo<TreasureMap>(_mappingConfiguration)
-                .ToArrayAsync();
-
-            return new PagedResults<TreasureMap>
+            if (includeGems)
             {
-                Items = items,
-                TotalSize = size
-            };
-        }
-
-        public async Task<TreasureMap> Remove(Guid id)
-        {
-            var entity = await _context.TreasureMaps.SingleAsync(a => a.Id == id);
-
-            if (entity == null)
-            {
-                return null;
+                query = query.Include(c => c.Gems);
             }
 
-            _context.TreasureMaps.Remove(entity);
-            await _context.SaveChangesAsync();
-            var mapper = _mappingConfiguration.CreateMapper();
-            return mapper.Map<TreasureMap>(entity);
+            query = query.Where(x => x.Name == name);
+            return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<TreasureMapEntity> Update(TreasureMapEntity treasureMap)
+        public async Task<TreasureMap> Update(TreasureMap treasureMap)
         {
             _context.TreasureMaps.Update(treasureMap);
             await _context.SaveChangesAsync();

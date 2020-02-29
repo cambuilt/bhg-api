@@ -38,7 +38,7 @@ namespace bhg.Controllers
         [Produces(typeof(Icon))]
         public async Task<ActionResult<Icon>> GetIconByName([FromRoute] string name)
         {
-            var icon = await _iconRepository.GetIconAsync(id);
+            var icon = await _iconRepository.GetIconAsync(name);
             if (icon == null) return NotFound();
             return icon;
         }

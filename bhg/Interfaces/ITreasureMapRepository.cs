@@ -8,7 +8,8 @@ namespace bhg.Interfaces
 {
     public interface ITreasureMapRepository
     {
-        Task<TreasureMapEntity> Add(TreasureMapEntity treasureMap);
+        void Add(TreasureMap treasureMap);
+        void Delete(TreasureMap treasureMap);
 
         Task<PagedResults<TreasureMap>> GetTreasureMapsAsync(
             PagingOptions pagingOptions, 
@@ -17,12 +18,8 @@ namespace bhg.Interfaces
 
         Task<TreasureMap> GetTreasureMapAsync(Guid id);
 
-        //Task<TreasureMap> Find(int id);
+        Task<TreasureMap[]> GetAllTreasureMapsAsync(bool includeGems = false);
 
-        Task<TreasureMapEntity> Update(TreasureMapEntity treasureMap);
-
-        Task<TreasureMap> Remove(Guid id);
-
-        Task<bool> Exist(Guid id);
+        Task<TreasureMap> Update(TreasureMapEntity treasureMap);
     }
 }

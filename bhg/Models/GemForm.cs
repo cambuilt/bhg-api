@@ -21,5 +21,9 @@ namespace bhg.Models
         public string Notes { get; set; }
         public string ImageUrl { get; set; }
         public string Website { get; set; }
+        public string Phone { get; set; }
+        public string YelpUrl { get; set; }
+        public string GoogleUrl { get; set; }
+        public string MenuUrl { get; set; }
     }
 }

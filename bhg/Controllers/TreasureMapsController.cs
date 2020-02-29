@@ -2,13 +2,11 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using bhg.Models;
 using bhg.Interfaces;
-using System.Net;
 using System;
 using Microsoft.Extensions.Options;
-using bhg.Infrastructure;
+using AutoMapper;
 
 namespace bhg.Controllers
 {
@@ -21,16 +19,32 @@ namespace bhg.Controllers
         private readonly ITreasureMapRepository _treasureMapRepository;
         private readonly IGemRepository _gemRepository;
         private readonly IRouteLineRepository _routeLineRepository;
+        private readonly IMapper mapper;
         private readonly PagingOptions _defaultPagingOptions;
 
         public TreasureMapsController(ITreasureMapRepository treasureMapRepository, 
             IGemRepository gemRepository, IRouteLineRepository routeLineRepository, 
-            IOptions<PagingOptions> defaultPagingOptionsWrapper)
+            IOptions<PagingOptions> defaultPagingOptionsWrapper, 
+            IMapper mapper)
         {
             _treasureMapRepository = treasureMapRepository;
             _gemRepository = gemRepository;
             _routeLineRepository = routeLineRepository;
+            this.mapper = mapper;
             _defaultPagingOptions = defaultPagingOptionsWrapper.Value;
+        }
+
+        public async Task<ActionResult> Get()
+        {
+            try
+            {
+                var result = await _treasureMapRepository.GetAllTreasureMapsAsync();
+                var mappedResult = mapper.Map<IEnumerable<TreasureMapEntity>>(result);
+                return Ok(mappedResult);
+            } catch (Exception ex)
+            {
+                return UnprocessableEntity(ex);
+            }
         }
 
         private async Task<bool> TreasureMapExists(Guid id)
@@ -38,32 +52,33 @@ namespace bhg.Controllers
             return await _treasureMapRepository.Exist(id);
         }
 
-        [HttpGet(Name = nameof(GetAllTreasureMaps))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(200)]
-        [ResponseCache(Duration = 60)]
-        public async Task<ActionResult<Collection<TreasureMap>>> GetAllTreasureMaps(
-            [FromQuery] PagingOptions pagingOptions,
-            [FromQuery] SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
-            [FromQuery] SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
-        {
-            pagingOptions.Offset = pagingOptions.Offset ?? _defaultPagingOptions.Offset;
-            pagingOptions.Limit = pagingOptions.Limit ?? _defaultPagingOptions.Limit;
+        //[HttpGet(Name = nameof(GetAllTreasureMaps))]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(200)]
+        //[ResponseCache(Duration = 60)]
+        //public async Task<ActionResult<Collection<TreasureMap>>> GetAllTreasureMaps(
+        //    [FromQuery] PagingOptions pagingOptions,
+        //    [FromQuery] SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
+        //    [FromQuery] SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
+        //{
+        //    pagingOptions.Offset = pagingOptions.Offset ?? _defaultPagingOptions.Offset;
+        //    pagingOptions.Limit = pagingOptions.Limit ?? _defaultPagingOptions.Limit;
 
-            PagedResults<TreasureMap> treasureMaps = await _treasureMapRepository.GetTreasureMapsAsync(
-                pagingOptions, sortOptions, searchOptions);
+        //    PagedResults<TreasureMap> treasureMaps = await _treasureMapRepository.GetTreasureMapsAsync(
+        //        pagingOptions, sortOptions, searchOptions);
 
-            var collection = PagedCollection<TreasureMap>.Create<TreasureMapsResponse>(
-                Link.ToCollection(nameof(GetAllTreasureMaps)),
-                treasureMaps.Items.ToArray(),
-                treasureMaps.TotalSize,
-                pagingOptions) as TreasureMapsResponse;
+        //    var collection = PagedCollection<TreasureMap>.Create<TreasureMapsResponse>(
+        //        Link.ToCollection(nameof(GetAllTreasureMaps)),
+        //        treasureMaps.Items.ToArray(),
+        //        treasureMaps.TotalSize,
+        //        pagingOptions) as TreasureMapsResponse;
 
-            collection.TreasureMapsQuery = FormMetadata.FromResource<TreasureMap>(
-                Link.ToForm(nameof(GetAllTreasureMaps), null, Link.GetMethod, Form.QueryRelation));
+        //    collection.TreasureMapsQuery = FormMetadata.FromResource<TreasureMap>(
+        //        Link.ToForm(nameof(GetAllTreasureMaps), null, Link.GetMethod, Form.QueryRelation));
 
-            return collection;
-        }
+        //    return collection;
+
+        //}
 
         [HttpGet("{id}", Name = nameof(GetTreasureMapById))]
         [ResponseCache(Duration = 60)]
@@ -99,7 +114,7 @@ namespace bhg.Controllers
             }
 
             var gemId = await _gemRepository.CreateGemAsync(
-                treasureMapId, gemForm.IconId, gemForm.Name, gemForm.Description, gemForm.Address, gemForm.Latitude, gemForm.Longitude, gemForm.Notes, gemForm.ImageUrl, gemForm.Website);
+                treasureMapId, gemForm.IconId, gemForm.Name, gemForm.Description, gemForm.Address, gemForm.Latitude, gemForm.Longitude, gemForm.Notes, gemForm.ImageUrl, gemForm.Website, gemForm.Phone, gemForm.YelpUrl, gemForm.GoogleUrl, gemForm.MenuUrl);
 
             return Created(
                 Url.Link(nameof(GemsController.GetGemById), new { id = gemId }), gemId);
