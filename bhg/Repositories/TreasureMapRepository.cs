@@ -72,5 +72,21 @@ namespace bhg.Repositories
             await _context.SaveChangesAsync();
             return treasureMap;
         }
+
+        public Task<PagedResults<TreasureMap>> GetTreasureMapsAsync(
+            PagingOptions pagingOptions,
+            SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
+            SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
+        {
+            return null;
+        }
+        public Task<TreasureMap> Update(TreasureMapEntity treasureMap)
+        {
+            return null;
+        }
+        public Task<bool> Exist(Guid id)
+        {
+            return null;
+        }
     }
 }

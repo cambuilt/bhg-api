@@ -11,7 +11,7 @@ namespace bhg.Models
 {
     public class FormField
     {
-        [Key]
+        [Key] 
         public string Name { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -42,6 +42,7 @@ namespace bhg.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? MaxLength { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [NotMapped]
         public object Value { get; set; }
     }

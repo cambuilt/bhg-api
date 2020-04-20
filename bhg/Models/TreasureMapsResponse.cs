@@ -7,6 +7,6 @@ namespace bhg.Models
 {
     public class TreasureMapsResponse : PagedCollection<TreasureMap>
     {
-        public Form TreasureMapsQuery { get; set; }
+        // public Form TreasureMapsQuery { get; set; }
     }
 }
