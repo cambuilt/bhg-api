@@ -18,6 +18,7 @@ namespace bhg.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");

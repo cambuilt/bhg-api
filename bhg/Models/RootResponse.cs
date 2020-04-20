@@ -15,8 +15,6 @@ namespace bhg.Models
 
         public Link Users { get; set; }
 
-        public Form Token { get; set; }
-
         public string GetEtag()
         {
             var serialized = JsonConvert.SerializeObject(this);

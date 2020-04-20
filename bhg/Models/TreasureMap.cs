@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace bhg.Models
 {
-    public class TreasureMap
+    public class TreasureMap : Resource
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -21,5 +21,6 @@ namespace bhg.Models
         public string BannerImageUrl { get; set; }
         public ICollection<Gem> Gems { get; set; }
         public ICollection<RouteLine> RouteLines { get; set; }
+        public Form Gem { get; set; }
     }
 }

@@ -15,11 +15,9 @@ namespace bhg.Interfaces
             PagingOptions pagingOptions, 
             SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
             SearchOptions<TreasureMap, TreasureMapEntity> searchOptions);
-
         Task<TreasureMap> GetTreasureMapAsync(Guid id);
-
         Task<TreasureMap[]> GetAllTreasureMapsAsync(bool includeGems = false);
-
         Task<TreasureMap> Update(TreasureMapEntity treasureMap);
+        Task<bool> Exist(Guid id);
     }
 }

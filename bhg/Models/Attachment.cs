@@ -9,6 +9,7 @@ namespace bhg.Models
 {
     public class Attachment : Resource
     {
+        public Guid Id { get; set; }
         public Guid GemId { get; set; }
         [Required]
         [StringLength(50)]
