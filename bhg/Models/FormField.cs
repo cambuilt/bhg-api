@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +11,7 @@ namespace bhg.Models
 {
     public class FormField
     {
+        [Key]
         public string Name { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -39,7 +42,7 @@ namespace bhg.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? MaxLength { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [NotMapped]
         public object Value { get; set; }
     }
 

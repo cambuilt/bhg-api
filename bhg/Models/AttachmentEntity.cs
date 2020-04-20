@@ -9,6 +9,7 @@ namespace bhg.Models
 {
     public class AttachmentEntity
     {
+        [Key]
         public Guid Id { get; set; }
         public Guid GemId { get; set; }
         [Required]

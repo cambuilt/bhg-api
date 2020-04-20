@@ -47,39 +47,6 @@ namespace bhg.Controllers
             }
         }
 
-        private async Task<bool> TreasureMapExists(Guid id)
-        {
-            return await _treasureMapRepository.Exist(id);
-        }
-
-        //[HttpGet(Name = nameof(GetAllTreasureMaps))]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(200)]
-        //[ResponseCache(Duration = 60)]
-        //public async Task<ActionResult<Collection<TreasureMap>>> GetAllTreasureMaps(
-        //    [FromQuery] PagingOptions pagingOptions,
-        //    [FromQuery] SortOptions<TreasureMap, TreasureMapEntity> sortOptions,
-        //    [FromQuery] SearchOptions<TreasureMap, TreasureMapEntity> searchOptions)
-        //{
-        //    pagingOptions.Offset = pagingOptions.Offset ?? _defaultPagingOptions.Offset;
-        //    pagingOptions.Limit = pagingOptions.Limit ?? _defaultPagingOptions.Limit;
-
-        //    PagedResults<TreasureMap> treasureMaps = await _treasureMapRepository.GetTreasureMapsAsync(
-        //        pagingOptions, sortOptions, searchOptions);
-
-        //    var collection = PagedCollection<TreasureMap>.Create<TreasureMapsResponse>(
-        //        Link.ToCollection(nameof(GetAllTreasureMaps)),
-        //        treasureMaps.Items.ToArray(),
-        //        treasureMaps.TotalSize,
-        //        pagingOptions) as TreasureMapsResponse;
-
-        //    collection.TreasureMapsQuery = FormMetadata.FromResource<TreasureMap>(
-        //        Link.ToForm(nameof(GetAllTreasureMaps), null, Link.GetMethod, Form.QueryRelation));
-
-        //    return collection;
-
-        //}
-
         [HttpGet("{id}", Name = nameof(GetTreasureMapById))]
         [ResponseCache(Duration = 60)]
         [ProducesResponseType(404)]
@@ -94,7 +61,7 @@ namespace bhg.Controllers
             var treasureMap = await _treasureMapRepository.GetTreasureMapAsync(id);
             if (treasureMap == null) return NotFound();
 
-            return treasureMap;
+           return treasureMap;
         }
 
         // POST /treasuremaps/{treasureMapId}/gems

@@ -23,6 +23,7 @@ namespace bhg.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Notes { get; set; }
+        [MaxLength(500)]
         public string ImageUrl { get; set; }
         public Guid IconId { get; set; }
         public string Website { get; set; }
@@ -30,6 +31,7 @@ namespace bhg.Models
         public string YelpUrl { get; set; }
         public string GoogleUrl { get; set; }
         public string MenuUrl { get; set; }
+        public float Sequence { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
 

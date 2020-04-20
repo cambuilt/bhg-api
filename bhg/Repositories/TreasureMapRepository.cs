@@ -28,7 +28,7 @@ namespace bhg.Repositories
         {
             _context.TreasureMaps.Remove(treasureMap);
         }
-        public async Task<TreasureMap[]> GetAllTreasureMapsAsync(bool includeGems = false)
+        public async Task<TreasureMap[]> GetAllTreasureMapsAsync(bool includeGems = true)
         {
             IQueryable<TreasureMap> query = _context.TreasureMaps;
 
@@ -37,12 +37,22 @@ namespace bhg.Repositories
                 query = query.Include(c => c.Gems);
             }
 
-            // Order It
             query = query.OrderBy(c => c.Name);
 
             return await query.ToArrayAsync();
         }
+        public async Task<TreasureMap> GetTreasureMapAsync(Guid id)
+        {
+            var entity = await _context.TreasureMaps.SingleOrDefaultAsync(x => x.Id == id);
 
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var mapper = _mappingConfiguration.CreateMapper();
+            return mapper.Map<TreasureMap>(entity);
+        }
         public async Task<TreasureMap> GetTreasureMapAsync(string name, bool includeGems = false)
         {
             IQueryable<TreasureMap> query = _context.TreasureMaps;

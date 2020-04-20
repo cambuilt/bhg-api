@@ -40,6 +40,7 @@ namespace bhg.Models
         public string YelpUrl { get; set; }
         public string GoogleUrl { get; set; }
         public string MenuUrl { get; set; }
+        public float Sequence { get; set; }
         public DateTimeOffset StartAt { get; set; }
         public DateTimeOffset EndAt { get; set; }
         public DateTime CreateDate { get; set; }

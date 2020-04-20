@@ -48,6 +48,7 @@ namespace bhg.Repositories
         public async Task<PagedResults<Icon>> GetStringIconsAsync()
         {
             IQueryable<IconEntity> query = _context.Icons;
+            IQueryable<GemEntity> queryGem = _context.Gems;
 
             var size = await query.CountAsync();
             var y = 0f;
@@ -57,6 +58,24 @@ namespace bhg.Repositories
                 .OrderBy(p => p.Name)
                 .ProjectTo<Icon>(_mappingConfiguration)
                 .ToArrayAsync();
+
+            var gemArray = await queryGem 
+                .Where(x => x.CreateDate > DateTime.Now.AddDays(-7) == true)
+                .OrderBy(p => p.Name)
+                .ProjectTo<Gem>(_mappingConfiguration)
+                .ToArrayAsync();
+
+            // Data source
+            string[] names = { "Bill", "Steve", "James", "Mohan" };
+
+            // LINQ Query 
+            var myLinqQuery = from name in names
+                              where name.Contains('a')
+                              select name;
+
+            // Query execution
+            foreach (var name in myLinqQuery)
+                Console.Write(name + " ");
 
             return new PagedResults<Icon>
             {
